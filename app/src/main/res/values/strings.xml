@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">MeetWeather</string>
+    <string name="searchPlace">请输入地址</string>
 </resources>
