@@ -2,6 +2,7 @@ package com.example.meetweather.logic.network
 
 import com.example.meetweather.MeetWeatherApplication
 import com.example.meetweather.logic.model.DailyResponse
+import com.example.meetweather.logic.model.HourResponse
 import com.example.meetweather.logic.model.RealtimeResponse
 import retrofit2.Call
 import retrofit2.http.GET
@@ -20,4 +21,10 @@ interface WeatherService {
         @Path("lng") lng: String,
         @Path("lat") lat: String
     ): Call<DailyResponse>
+
+    @GET("v2.5/${MeetWeatherApplication.TOKEN}/{lng},{lat}/hourly?hourlysteps=24")
+    fun getHourWeather(
+        @Path("lng") lng: String,
+        @Path("lat") lat: String
+    ): Call<HourResponse>
 }

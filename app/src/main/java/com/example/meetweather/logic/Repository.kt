@@ -33,15 +33,22 @@ object Repository {
             val deferredDaily = async {
                 MeetWeatherNetwork.getDailyWeather(lng, lat)
             }
+            val deferredHour = async {
+                MeetWeatherNetwork.getHourWeather(lng, lat)
+            }
             val realtimeResponse = deferredRealtime.await()
             val dailyResponse = deferredDaily.await()
-            if (realtimeResponse.status == "ok" && dailyResponse.status == "ok") {
-                val weather = Weather(realtimeResponse.result.realtime, dailyResponse.result.daily)
+            val hourResponse = deferredHour.await()
+            if (realtimeResponse.status == "ok" && dailyResponse.status == "ok"
+                && hourResponse.status == "ok") {
+                val weather = Weather(realtimeResponse.result.realtime,
+                    dailyResponse.result.daily, hourResponse.result.hourly)
                 Result.success(weather)
             } else {
                 Result.failure(
                     RuntimeException("realtime status is ${realtimeResponse.status}" +
-                        "daily status is ${dailyResponse.status}")
+                        "daily status is ${dailyResponse.status}" +
+                        "hour status is ${hourResponse.status}")
                 )
             }
         }

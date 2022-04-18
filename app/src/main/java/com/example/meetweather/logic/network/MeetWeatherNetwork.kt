@@ -18,6 +18,9 @@ object MeetWeatherNetwork {
     suspend fun getRealtimeWeather(lng: String, lat: String) =
         weatherService.getRealtimeWeather(lng, lat).await()
 
+    suspend fun getHourWeather(lng: String, lat: String) =
+        weatherService.getHourWeather(lng, lat).await()
+
     private val placeService = ServiceCreator.create(PlaceService::class.java)
 
     suspend fun searchPlaces(query: String) = placeService.searchPlaces(query).await()

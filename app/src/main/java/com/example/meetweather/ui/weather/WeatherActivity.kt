@@ -14,12 +14,14 @@ import androidx.core.view.GravityCompat
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.meetweather.R
 import com.example.meetweather.logic.model.Weather
 import com.example.meetweather.logic.model.getSky
 import kotlinx.android.synthetic.main.activity_weather.*
 import kotlinx.android.synthetic.main.forecast.*
 import kotlinx.android.synthetic.main.fragment_place.*
+import kotlinx.android.synthetic.main.hour.*
 import kotlinx.android.synthetic.main.life_index.*
 import kotlinx.android.synthetic.main.now.*
 import java.text.SimpleDateFormat
@@ -91,13 +93,21 @@ class WeatherActivity : AppCompatActivity() {
         placeName.text = viewModel.placeName
         val realtime = weather.realtime
         val daily = weather.daily
+        val hour = weather.hour
 
         val currentTempText = "${realtime.temperature.toInt()} ℃"
         currentTemp.text = currentTempText
         currentSky.text = getSky(realtime.skycon).info
         val currentPM25Text = "空气指数 ${realtime.airQuality.aqi.chn.toInt()}"
         currentAQI.text = currentPM25Text
-        nowLayout.setBackgroundResource(getSky(realtime.skycon).bg)
+        swipeRefresh.setBackgroundResource(getSky(realtime.skycon).bg)
+//        nowLayout.setBackgroundResource(getSky(realtime.skycon).bg)
+
+        val layoutManager = LinearLayoutManager(this)
+        layoutManager.orientation = LinearLayoutManager.HORIZONTAL
+        hourRecycle.layoutManager = layoutManager
+        val adapter = HourAdapter(hour.temperature, hour.skycon)
+        hourRecycle.adapter = adapter
 
         forecastLayout.removeAllViews()
         val days = daily.skycon.size
